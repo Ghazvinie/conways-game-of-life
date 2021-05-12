@@ -1,0 +1,15 @@
+#world {
+    padding-bottom: 10px;
+}
+table {
+    background-color: whitesmoke;
+}
+td {
+    border: 1px solid darkgray;
+    width: 10px;
+    height: 10px;
+}
+#worldGrid{
+    margin-left: auto;
+    margin-right: auto;
+}
