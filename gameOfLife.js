@@ -7,18 +7,10 @@ let nextGeneration = [];
 
 // Initialise array representation of world for current and next generations
 (function worldArray() {
-<<<<<<< HEAD
     for (let i = 0; i < rows; i++) {
         currentGeneration[i] = new Array(rows);
         nextGeneration[i] = new Array(rows);
         for (let j = 0; j < columns; j++) {
-=======
-
-    for (let i = 0 ; i < rows; i++){
-        currentGeneration[i] = new Array(rows);
-        nextGeneration[i] = new Array(rows);
-        for (let j = 0; j < columns; j++){
->>>>>>> ba715cd40514ea9dd91b6c7fadb6166242be14ad
             currentGeneration[i][j] = 0;
             nextGeneration[i][j] = 0;
         }
@@ -51,21 +43,14 @@ function startClick(event) {
     const x = this.id.split('_')[0];
     const y = this.id.split('_')[1];
 
-<<<<<<< HEAD
     if (this.className === 'alive') {
         this.setAttribute('class', 'dead');
         currentGeneration[x][y] = 0;
         console.log(x, y)
-=======
-    if (this.className === 'alive'){
-        this.setAttribute('class', 'dead');
-        currentGeneration[x][y] = 0;
->>>>>>> ba715cd40514ea9dd91b6c7fadb6166242be14ad
 
     } else {
         this.setAttribute('class', 'alive');
         currentGeneration[x][y] = 1;
-<<<<<<< HEAD
         console.log(x, y)
         console.log(currentGeneration[x][y]);
     }
@@ -80,16 +65,6 @@ function getNeighboursCount(x, y) {
         [currentGeneration[x + 1][y]], [currentGeneration[x + 1][y + 1]]
     ].filter(cell => cell[0] === 1).length;
 }
-=======
-    }
-}
-
-window.onload = () => {
-    createWorld();
-  };
-
-console.log(currentGeneration);
->>>>>>> ba715cd40514ea9dd91b6c7fadb6166242be14ad
 
     // Top Right
     if (x -1 < 0 && y + 1 > columns -1) {
@@ -157,18 +132,9 @@ console.log(currentGeneration);
     ].filter(cell => cell[0] === 1).length;
 }
 
+
+
+
 window.onload = () => {
     createWorld();
 };
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-=======
-
->>>>>>> ba715cd40514ea9dd91b6c7fadb6166242be14ad
