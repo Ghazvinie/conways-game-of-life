@@ -6,14 +6,13 @@ startButton.addEventListener('click', () => {
     if (!running) {
         life();
         running = !running;
-    } else if (running){
+    } else {
         stop();
         running = !running;
     }
 });
 
-resetButton.addEventListener('click', resetWorld)
-
+resetButton.addEventListener('click', resetWorld);
 
 const rows = 40;
 const columns = 40;
@@ -35,16 +34,12 @@ let nextGeneration = [];
 })();
 
 function resetWorld() {
-    const world = document.getElementById('world');
-
-    for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < columns; j++) {
-            let cell = document.getElementById(`${i}_${j}`);
-            cell.setAttribute('class', 'dead');
-            currentGeneration[i][j] = 0;
-            nextGeneration[i][j] = 0;
-        }
-    }
+    currentGeneration.map((row, rowIdx) => row.map((cell, cellIdx) => {
+        cell = document.getElementById(`${rowIdx}_${cellIdx}`);
+        cell.setAttribute('class', 'dead');
+        currentGeneration[rowIdx][cellIdx] = 0;
+        nextGeneration[rowIdx][cellIdx] = 0;
+    }));
     stop();
 }
 
@@ -54,18 +49,19 @@ function createWorld() {
     const table = document.createElement('table');
     table.setAttribute('id', 'worldGrid');
 
-    for (let i = 0; i < rows; i++) {
+    currentGeneration.map((row, rowIdx) => {
         let tableRow = document.createElement('table');
-        for (let j = 0; j < columns; j++) {
-            let cell = document.createElement('td');
-            cell.setAttribute('id', `${i}_${j}`);
+
+        row.map((cell, cellIdx) => {
+            cell = document.createElement('td');
+            cell.setAttribute('id', `${rowIdx}_${cellIdx}`);
             cell.setAttribute('class', 'dead');
             cell.addEventListener('click', startClick);
-
+    
             tableRow.appendChild(cell);
-        }
+        });
         table.appendChild(tableRow);
-    }
+    });
     world.appendChild(table);
 }
 
@@ -77,7 +73,6 @@ function startClick(event) {
     if (this.className === 'alive') {
         this.setAttribute('class', 'dead');
         currentGeneration[x][y] = 0;
-
     } else {
         this.setAttribute('class', 'alive');
         currentGeneration[x][y] = 1;
@@ -91,8 +86,8 @@ function getNeighboursCount(x, y) {
     return [
                                        [currentGeneration[x][y + 1]],
         [currentGeneration[x + 1][y]], [currentGeneration[x + 1][y + 1]]
-    ].filter(cell => cell[0] === 1).length;
-}
+       ].filter(cell => cell[0] === 1).length;
+    } else
 
     // Top Right
     if (x -1 < 0 && y + 1 > columns -1) {
@@ -155,50 +150,41 @@ function getNeighboursCount(x, y) {
         return [
             [currentGeneration[x - 1][y - 1]], [currentGeneration[x - 1][y]], [currentGeneration[x - 1][y + 1]],
             [currentGeneration[x][y - 1]],                                    [currentGeneration[x][y + 1]],
-            [currentGeneration[x + 1][y -1]],[currentGeneration[x + 1][y]],  [currentGeneration[x + 1][y + 1]]
+            [currentGeneration[x + 1][y -1]],[currentGeneration[x + 1][y]],   [currentGeneration[x + 1][y + 1]]
         ].filter(cell => cell[0] === 1).length;
     }
-
-
- 
 }
 
 function createNext(){
-    for (let i = 0; i < rows; i ++){
-        for (let j = 0; j < columns; j ++){
-            let liveNeighbours = getNeighboursCount(i, j);
-            if ((liveNeighbours < 2 || liveNeighbours > 3) && currentGeneration[i][j] === 1){
-                nextGeneration[i][j] = 0;
-            } else if (liveNeighbours === 3 && currentGeneration[i][j] === 0) {
-                nextGeneration[i][j] = 1;
+    currentGeneration.map((row, rowIdx) => row.map((cell, cellIdx) => {
+        let liveNeighbours = getNeighboursCount(rowIdx, cellIdx);
+            if ((liveNeighbours < 2 || liveNeighbours > 3) && currentGeneration[rowIdx][cellIdx] === 1){
+                nextGeneration[rowIdx][cellIdx] = 0;
+            } else if (liveNeighbours === 3 && currentGeneration[rowIdx][cellIdx] === 0) {
+                nextGeneration[rowIdx][cellIdx] = 1;
             } else {
-                nextGeneration[i][j] = currentGeneration[i][j];
+                nextGeneration[rowIdx][cellIdx] = currentGeneration[rowIdx][cellIdx];
             }
-        }
-    }
+    }));
 }
 
 function updateCurrent(){
-    for (let i = 0; i < rows; i ++){
-        for (let j = 0; j < columns; j ++){
-            currentGeneration[i][j] = nextGeneration[i][j];
-            nextGeneration[i][j] = 0;
-        }
-    }
+    currentGeneration.map((row, rowIdx) => row.map((cell, cellIdx) => {
+        currentGeneration[rowIdx][cellIdx] = nextGeneration[rowIdx][cellIdx];
+        nextGeneration[rowIdx][cellIdx] = 0;
+    }));
 }
 
 function updateWorld() {
     let cell = '';
-    for (let i = 0; i < rows; i ++){
-        for (let j = 0; j < columns; j ++){
-            cell = document.getElementById(`${i}_${j}`);
-            if (currentGeneration[i][j] === 1){
+    currentGeneration.map((row, rowIdx) => row.map((cell, cellIdx) => {
+        cell = document.getElementById(`${rowIdx}_${cellIdx}`);
+            if (currentGeneration[rowIdx][cellIdx] === 1){
                 cell.setAttribute('class', 'alive');
-            } else if (currentGeneration[i][j] === 0){
+            } else if (currentGeneration[rowIdx][cellIdx] === 0){
                 cell.setAttribute('class', 'dead');
             }
-        }
-    }
+    }));
 }
 
 let interval;
