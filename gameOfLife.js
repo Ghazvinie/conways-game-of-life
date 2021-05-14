@@ -1,7 +1,37 @@
 const startButton = document.getElementById('startBtn');
 const resetButton = document.getElementById('reset');
+const gridSubmit = document.getElementById('submitGrid');
+const gridSize = document.getElementById('gridSize');
 
+// Default grid size
+let rows = 40;
+let columns = 40;
+
+// Is world running
 let running = false;
+
+// Generate custom grid
+gridSubmit.addEventListener('click', () => {
+    // Delete old grid
+    const world = document.getElementById('world');
+    const table = document.getElementById('worldGrid');
+    world.removeChild(table);
+    // Set arrays to empty
+    currentGeneration = [];
+    nextGeneration = [];
+    // Change grid size
+    rows = Number(gridSize.value);
+    columns = rows;
+  
+  // Generate new world and arrays
+  worldArray();
+  createWorld();
+  stop();
+  running = !running;
+});
+
+// Start world
+
 startButton.addEventListener('click', () => {
     if (!running) {
         life();
@@ -12,17 +42,15 @@ startButton.addEventListener('click', () => {
     }
 });
 
+// Reset world
 resetButton.addEventListener('click', resetWorld);
-
-const rows = 40;
-const columns = 40;
 
 // World arrays
 let currentGeneration = [];
 let nextGeneration = [];
 
 // Initialise array representation of world for current and next generations
-(function worldArray() {
+function worldArray() {
     for (let i = 0; i < rows; i++) {
         currentGeneration[i] = new Array(rows);
         nextGeneration[i] = new Array(rows);
@@ -31,7 +59,7 @@ let nextGeneration = [];
             nextGeneration[i][j] = 0;
         }
     }
-})();
+}
 
 function resetWorld() {
     currentGeneration.map((row, rowIdx) => row.map((cell, cellIdx) => {
@@ -43,6 +71,7 @@ function resetWorld() {
     stop();
 }
 
+let mousedown = false;
 //Create world/table
 function createWorld() {
     const world = document.getElementById('world');
@@ -53,10 +82,22 @@ function createWorld() {
         let tableRow = document.createElement('table');
 
         row.map((cell, cellIdx) => {
+            // Create table cells
             cell = document.createElement('td');
             cell.setAttribute('id', `${rowIdx}_${cellIdx}`);
             cell.setAttribute('class', 'dead');
-            cell.addEventListener('click', startClick);
+
+            // Add cell event listeners
+            cell.addEventListener('click', selectCells);
+            cell.addEventListener('mouseover', function() {
+                if (mousedown) {
+                    selectCells.call(this);
+                }
+            });
+            //Add table event listeners
+            table.addEventListener('mouseup', () => mousedown = false);
+            table.addEventListener('mousedown', () => mousedown = true);
+
     
             tableRow.appendChild(cell);
         });
@@ -66,7 +107,7 @@ function createWorld() {
 }
 
 // Click initial live cells
-function startClick(event) {
+function selectCells(event) {
     const x = this.id.split('_')[0];
     const y = this.id.split('_')[1];
 
@@ -201,5 +242,6 @@ function stop () {
 }
 
 window.onload = () => {
+    worldArray();
     createWorld();
 };

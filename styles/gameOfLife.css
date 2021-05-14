@@ -17,3 +17,6 @@ td {
 .alive {
     background-color: green;
 }
+input {
+    width: 100px;
+}
