@@ -2,4 +2,8 @@
 
 #### The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970. It is a zero-player game, meaning that its evolution is determined by its initial state, requiring no further input. [Read more on Wikipedia](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 
+Written in JavaScript, with a little HTML and CSS.
 
+* Choose a grid size
+* Select some cells for life to begin from
+* Become a (very) minor God!
