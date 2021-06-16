@@ -61,6 +61,7 @@ function worldArray() {
     }
 }
 
+// Reset world back to all dead
 function resetWorld() {
     currentGeneration.map((row, rowIdx) => row.map((cell, cellIdx) => {
         cell = document.getElementById(`${rowIdx}_${cellIdx}`);
@@ -72,7 +73,7 @@ function resetWorld() {
 }
 
 let mousedown = false;
-//Create world/table
+// Create world/table
 function createWorld() {
     const world = document.getElementById('world');
     const table = document.createElement('table');
@@ -94,19 +95,21 @@ function createWorld() {
                     selectCells.call(this);
                 }
             });
-            //Add table event listeners
+            // Add table event listeners to manage mouse up/down
             table.addEventListener('mouseup', () => mousedown = false);
             table.addEventListener('mousedown', () => mousedown = true);
 
-    
+            // Add cell to row
             tableRow.appendChild(cell);
         });
+        // Add row to table
         table.appendChild(tableRow);
     });
+    // Add table to div
     world.appendChild(table);
 }
 
-// Click initial live cells
+// User sets initial live cells
 function selectCells(event) {
     const x = this.id.split('_')[0];
     const y = this.id.split('_')[1];
@@ -120,6 +123,7 @@ function selectCells(event) {
     }
 }
 
+// Count number of live neighbours of cell
 function getNeighboursCount(x, y) {
 
     // Top Left
@@ -154,7 +158,7 @@ function getNeighboursCount(x, y) {
         ].filter(cell => cell[0] === 1).length;
     } else 
 
-    // Top 
+    // Top edge
     if (x - 1 < 0) {
         return [
             [currentGeneration[x][y - 1]],                                    [currentGeneration[x][y + 1]],
@@ -162,7 +166,7 @@ function getNeighboursCount(x, y) {
         ].filter(cell => cell[0] === 1).length;
     } else 
 
-    // Bottom 
+    // Bottom edge
     if (x + 1 > rows -1) {
         return [
             [currentGeneration[x - 1][y - 1]],    [currentGeneration[x -1][y]], [currentGeneration[x -1 ][y + 1]],
@@ -170,7 +174,7 @@ function getNeighboursCount(x, y) {
         ].filter(cell => cell[0] === 1).length;
     } else 
 
-    // Right
+    // Right edge
     if (y + 1 > columns - 1){
         return [
             [currentGeneration[x - 1][y - 1]], [currentGeneration[x -1 ][y]],
@@ -179,7 +183,7 @@ function getNeighboursCount(x, y) {
         ].filter(cell => cell[0] === 1).length;
     } else 
 
-    // Left
+    // Left edge
     if (y - 1 < 0) {
         return [
             [currentGeneration[x - 1][y]], [currentGeneration[x -1 ][y + 1]],
@@ -196,6 +200,7 @@ function getNeighboursCount(x, y) {
     }
 }
 
+// Create the next generation
 function createNext(){
     currentGeneration.map((row, rowIdx) => row.map((cell, cellIdx) => {
         let liveNeighbours = getNeighboursCount(rowIdx, cellIdx);
@@ -209,6 +214,7 @@ function createNext(){
     }));
 }
 
+// Update current generation to be next generation just generated
 function updateCurrent(){
     currentGeneration.map((row, rowIdx) => row.map((cell, cellIdx) => {
         currentGeneration[rowIdx][cellIdx] = nextGeneration[rowIdx][cellIdx];
@@ -216,6 +222,7 @@ function updateCurrent(){
     }));
 }
 
+// Update html world so it matches current generation array
 function updateWorld() {
     let cell = '';
     currentGeneration.map((row, rowIdx) => row.map((cell, cellIdx) => {
@@ -228,6 +235,7 @@ function updateWorld() {
     }));
 }
 
+// Start life
 let interval;
 function life(){
     interval = setInterval(() => {
@@ -237,10 +245,12 @@ function life(){
     },100);
 }
 
+// Pause life 
 function stop () {
     clearInterval(interval);
 }
 
+// Create an initial world and arrays 
 window.onload = () => {
     worldArray();
     createWorld();
