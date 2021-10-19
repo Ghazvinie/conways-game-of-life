@@ -2,6 +2,7 @@ const startButton = document.getElementById('startBtn');
 const resetButton = document.getElementById('reset');
 const gridSubmit = document.getElementById('submitGrid');
 const gridSize = document.getElementById('gridSize');
+const gameRunning = document.querySelector('.game-running');
 
 // Default grid size
 let rows = 40;
@@ -22,12 +23,14 @@ gridSubmit.addEventListener('click', () => {
     // Change grid size
     rows = Number(gridSize.value);
     columns = rows;
-  
-  // Generate new world and arrays
-  worldArray();
-  createWorld();
-  stop();
-  running = !running;
+
+    // Generate new world and arrays
+    worldArray();
+    createWorld();
+    stop();
+    running = !running;
+    gameRunning.classList.remove('running-active')
+
 });
 
 // Start world
@@ -35,9 +38,11 @@ gridSubmit.addEventListener('click', () => {
 startButton.addEventListener('click', () => {
     if (!running) {
         life();
+        gameRunning.classList.add('running-active')
         running = !running;
     } else {
         stop();
+        gameRunning.classList.remove('running-active')
         running = !running;
     }
 });
@@ -69,6 +74,8 @@ function resetWorld() {
         currentGeneration[rowIdx][cellIdx] = 0;
         nextGeneration[rowIdx][cellIdx] = 0;
     }));
+    running = !running;
+    gameRunning.classList.remove('running-active')
     stop();
 }
 
@@ -90,7 +97,7 @@ function createWorld() {
 
             // Add cell event listeners
             cell.addEventListener('click', selectCells);
-            cell.addEventListener('mouseover', function() {
+            cell.addEventListener('mouseover', function () {
                 if (mousedown) {
                     selectCells.call(this);
                 }
@@ -128,94 +135,94 @@ function getNeighboursCount(x, y) {
 
     // Top Left
     if (x - 1 < 0 && y - 1 < 0) {
-    return [
-                                       [currentGeneration[x][y + 1]],
-        [currentGeneration[x + 1][y]], [currentGeneration[x + 1][y + 1]]
-       ].filter(cell => cell[0] === 1).length;
-    } else
-
-    // Top Right
-    if (x -1 < 0 && y + 1 > columns -1) {
         return [
-            [currentGeneration[x][y - 1]],
-            [currentGeneration[x + 1][y - 1]], [currentGeneration[x + 1][y]]
-        ].filter(cell => cell[0] === 1).length;
-    } else 
-
-    // Bottom Left
-    if (x + 1 > rows -1 && y - 1 < 0) {
-        return [
-            [currentGeneration[x - 1][y]], [currentGeneration[x - 1][y + 1]],
-                                           [currentGeneration[x][y + 1]]
-        ].filter(cell => cell[0] === 1).length;
-    } else 
-
-    // Bottom Right
-    if (x + 1 > rows - 1 && y + 1 > columns - 1) {
-        return [
-            [currentGeneration[x - 1][y - 1]], [currentGeneration[x - 1][y]],
-            [currentGeneration[x][y - 1]],
-        ].filter(cell => cell[0] === 1).length;
-    } else 
-
-    // Top edge
-    if (x - 1 < 0) {
-        return [
-            [currentGeneration[x][y - 1]],                                    [currentGeneration[x][y + 1]],
-            [currentGeneration[x + 1][y - 1]], [currentGeneration[x + 1][y]], [currentGeneration[x + 1][y + 1]]
-        ].filter(cell => cell[0] === 1).length;
-    } else 
-
-    // Bottom edge
-    if (x + 1 > rows -1) {
-        return [
-            [currentGeneration[x - 1][y - 1]],    [currentGeneration[x -1][y]], [currentGeneration[x -1 ][y + 1]],
-            [currentGeneration[x][y - 1]],                                      [currentGeneration[x][y + 1]]
-        ].filter(cell => cell[0] === 1).length;
-    } else 
-
-    // Right edge
-    if (y + 1 > columns - 1){
-        return [
-            [currentGeneration[x - 1][y - 1]], [currentGeneration[x -1 ][y]],
-            [currentGeneration[x][y - 1]],
-            [currentGeneration[x + 1][y - 1]], [currentGeneration[x + 1][y]]
-        ].filter(cell => cell[0] === 1).length;
-    } else 
-
-    // Left edge
-    if (y - 1 < 0) {
-        return [
-            [currentGeneration[x - 1][y]], [currentGeneration[x -1 ][y + 1]],
-                                           [currentGeneration[x][y + 1]],
+            [currentGeneration[x][y + 1]],
             [currentGeneration[x + 1][y]], [currentGeneration[x + 1][y + 1]]
         ].filter(cell => cell[0] === 1).length;
-    } else {
-    // Middle
-        return [
-            [currentGeneration[x - 1][y - 1]], [currentGeneration[x - 1][y]], [currentGeneration[x - 1][y + 1]],
-            [currentGeneration[x][y - 1]],                                    [currentGeneration[x][y + 1]],
-            [currentGeneration[x + 1][y -1]],[currentGeneration[x + 1][y]],   [currentGeneration[x + 1][y + 1]]
-        ].filter(cell => cell[0] === 1).length;
-    }
+    } else
+
+        // Top Right
+        if (x - 1 < 0 && y + 1 > columns - 1) {
+            return [
+                [currentGeneration[x][y - 1]],
+                [currentGeneration[x + 1][y - 1]], [currentGeneration[x + 1][y]]
+            ].filter(cell => cell[0] === 1).length;
+        } else
+
+            // Bottom Left
+            if (x + 1 > rows - 1 && y - 1 < 0) {
+                return [
+                    [currentGeneration[x - 1][y]], [currentGeneration[x - 1][y + 1]],
+                    [currentGeneration[x][y + 1]]
+                ].filter(cell => cell[0] === 1).length;
+            } else
+
+                // Bottom Right
+                if (x + 1 > rows - 1 && y + 1 > columns - 1) {
+                    return [
+                        [currentGeneration[x - 1][y - 1]], [currentGeneration[x - 1][y]],
+                        [currentGeneration[x][y - 1]],
+                    ].filter(cell => cell[0] === 1).length;
+                } else
+
+                    // Top edge
+                    if (x - 1 < 0) {
+                        return [
+                            [currentGeneration[x][y - 1]], [currentGeneration[x][y + 1]],
+                            [currentGeneration[x + 1][y - 1]], [currentGeneration[x + 1][y]], [currentGeneration[x + 1][y + 1]]
+                        ].filter(cell => cell[0] === 1).length;
+                    } else
+
+                        // Bottom edge
+                        if (x + 1 > rows - 1) {
+                            return [
+                                [currentGeneration[x - 1][y - 1]], [currentGeneration[x - 1][y]], [currentGeneration[x - 1][y + 1]],
+                                [currentGeneration[x][y - 1]], [currentGeneration[x][y + 1]]
+                            ].filter(cell => cell[0] === 1).length;
+                        } else
+
+                            // Right edge
+                            if (y + 1 > columns - 1) {
+                                return [
+                                    [currentGeneration[x - 1][y - 1]], [currentGeneration[x - 1][y]],
+                                    [currentGeneration[x][y - 1]],
+                                    [currentGeneration[x + 1][y - 1]], [currentGeneration[x + 1][y]]
+                                ].filter(cell => cell[0] === 1).length;
+                            } else
+
+                                // Left edge
+                                if (y - 1 < 0) {
+                                    return [
+                                        [currentGeneration[x - 1][y]], [currentGeneration[x - 1][y + 1]],
+                                        [currentGeneration[x][y + 1]],
+                                        [currentGeneration[x + 1][y]], [currentGeneration[x + 1][y + 1]]
+                                    ].filter(cell => cell[0] === 1).length;
+                                } else {
+                                    // Middle
+                                    return [
+                                        [currentGeneration[x - 1][y - 1]], [currentGeneration[x - 1][y]], [currentGeneration[x - 1][y + 1]],
+                                        [currentGeneration[x][y - 1]], [currentGeneration[x][y + 1]],
+                                        [currentGeneration[x + 1][y - 1]], [currentGeneration[x + 1][y]], [currentGeneration[x + 1][y + 1]]
+                                    ].filter(cell => cell[0] === 1).length;
+                                }
 }
 
 // Create the next generation
-function createNext(){
+function createNext() {
     currentGeneration.map((row, rowIdx) => row.map((cell, cellIdx) => {
         let liveNeighbours = getNeighboursCount(rowIdx, cellIdx);
-            if ((liveNeighbours < 2 || liveNeighbours > 3) && currentGeneration[rowIdx][cellIdx] === 1){
-                nextGeneration[rowIdx][cellIdx] = 0;
-            } else if (liveNeighbours === 3 && currentGeneration[rowIdx][cellIdx] === 0) {
-                nextGeneration[rowIdx][cellIdx] = 1;
-            } else {
-                nextGeneration[rowIdx][cellIdx] = currentGeneration[rowIdx][cellIdx];
-            }
+        if ((liveNeighbours < 2 || liveNeighbours > 3) && currentGeneration[rowIdx][cellIdx] === 1) {
+            nextGeneration[rowIdx][cellIdx] = 0;
+        } else if (liveNeighbours === 3 && currentGeneration[rowIdx][cellIdx] === 0) {
+            nextGeneration[rowIdx][cellIdx] = 1;
+        } else {
+            nextGeneration[rowIdx][cellIdx] = currentGeneration[rowIdx][cellIdx];
+        }
     }));
 }
 
 // Update current generation to be next generation just generated
-function updateCurrent(){
+function updateCurrent() {
     currentGeneration.map((row, rowIdx) => row.map((cell, cellIdx) => {
         currentGeneration[rowIdx][cellIdx] = nextGeneration[rowIdx][cellIdx];
         nextGeneration[rowIdx][cellIdx] = 0;
@@ -227,26 +234,26 @@ function updateWorld() {
     let cell = '';
     currentGeneration.map((row, rowIdx) => row.map((cell, cellIdx) => {
         cell = document.getElementById(`${rowIdx}_${cellIdx}`);
-            if (currentGeneration[rowIdx][cellIdx] === 1){
-                cell.setAttribute('class', 'alive');
-            } else if (currentGeneration[rowIdx][cellIdx] === 0){
-                cell.setAttribute('class', 'dead');
-            }
+        if (currentGeneration[rowIdx][cellIdx] === 1) {
+            cell.setAttribute('class', 'alive');
+        } else if (currentGeneration[rowIdx][cellIdx] === 0) {
+            cell.setAttribute('class', 'dead');
+        }
     }));
 }
 
 // Start life
 let interval;
-function life(){
+function life() {
     interval = setInterval(() => {
         createNext();
         updateCurrent();
         updateWorld();
-    },100);
+    }, 100);
 }
 
 // Pause life 
-function stop () {
+function stop() {
     clearInterval(interval);
 }
 

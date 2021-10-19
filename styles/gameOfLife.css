@@ -1,15 +1,25 @@
-#world {
-    padding-bottom: 10px;
+body {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    flex-direction: column;
 }
+
+#world {
+    margin-top: 4rem;
+}
+
 table {
     background-color: whitesmoke;
 }
+
 td {
     border: 1px solid darkgray;
     width: 10px;
     height: 10px;
 }
-#worldGrid{
+
+#worldGrid {
     margin-left: auto;
     margin-right: auto;
 }
@@ -17,6 +27,32 @@ td {
 .alive {
     background-color: green;
 }
+
 input {
     width: 100px;
+    margin: 0.75rem;
+}
+
+button {
+    width: 100px;
+    margin: 0.75rem;
+}
+
+.game-running {
+    text-align: center;
+    visibility: hidden;
+    color: red;
+    margin-top: 1rem;
+    margin-bottom: 0.2rem;
+}
+
+.running-active {
+    visibility: visible;
+    animation: blinker 1.5s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
 }

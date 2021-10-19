@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/gameOfLife.css">
 </head>
-<body>    
+
+<body>
     <div id="world">
     </div>
-    <label for="gridSize">Grid Size:</label>
-    <input type="text" id="gridSize" name="gridSize"><input id="submitGrid" type="submit" value="Submit">
-    <div><button id="startBtn" type="button">Start / Stop</button></div>
-    <div><button id="reset" type="button">Reset</button></div>
+
+    <div>
+        <p class="game-running">GAME RUNNING</p>
+        <label for="gridSize">Grid Size (best not to go above 100!):</label>
+        <input type="text" id="gridSize" name="gridSize"><input id="submitGrid" type="submit" value="Submit">
+    </div>
+    <div>
+        <button id="startBtn" type="button">Start / Stop</button>
+        <button id="reset" type="button">Reset</button>
+    </div>
+
     <script src="gameOfLife.js"></script>
 </body>
 
