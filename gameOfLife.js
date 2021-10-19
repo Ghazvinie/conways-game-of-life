@@ -28,7 +28,7 @@ gridSubmit.addEventListener('click', () => {
     worldArray();
     createWorld();
     stop();
-    running = !running;
+    running = false;
     gameRunning.classList.remove('running-active')
 
 });
@@ -39,11 +39,11 @@ startButton.addEventListener('click', () => {
     if (!running) {
         life();
         gameRunning.classList.add('running-active')
-        running = !running;
+        running = true;
     } else {
         stop();
         gameRunning.classList.remove('running-active')
-        running = !running;
+        running = false;
     }
 });
 
@@ -74,7 +74,7 @@ function resetWorld() {
         currentGeneration[rowIdx][cellIdx] = 0;
         nextGeneration[rowIdx][cellIdx] = 0;
     }));
-    running = !running;
+    running = false;
     gameRunning.classList.remove('running-active')
     stop();
 }
